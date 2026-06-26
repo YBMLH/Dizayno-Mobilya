@@ -6,6 +6,17 @@
 <title>Dizayno Mobilya — Carte de visite</title>
 <meta name="description" content="Dizayno Mobilya — Mobilier & décoration. Enregistrez notre contact, appelez-nous ou visitez notre showroom.">
 <meta name="theme-color" content="#0B0B0C">
+<script>
+  /* Apply saved/preferred theme before first paint to avoid any flash */
+  (function(){
+    try{
+      var saved = localStorage.getItem("dm-theme");
+      var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      var theme = saved || (prefersLight ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", theme);
+    }catch(e){ document.documentElement.setAttribute("data-theme","dark"); }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;0,900;1,800;1,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,6 +27,7 @@
      même bloc CONFIG. Modifiez celui du script.)
      ============================================================ */
   :root{
+    /* ---- DARK (default) ---- */
     --ink:#0B0B0C;
     --surface:#151517;
     --surface-2:#1D1D20;
@@ -25,26 +37,48 @@
     --gold-hi:#E7CC86;
     --gold-deep:#8F7330;
     --line:rgba(201,162,75,.20);
+    --hairline:rgba(255,255,255,.06);
+    --hero-mid:rgba(11,11,12,.65);
+    --glow-1:rgba(201,162,75,.16);
+    --glow-2:rgba(201,162,75,.07);
     --radius:18px;
     --maxw:460px;
     --display:'Archivo',system-ui,sans-serif;
     --body:'Inter',system-ui,sans-serif;
   }
 
+  /* ---- LIGHT — warm ivory palette tuned to the gold ---- */
+  :root[data-theme="light"]{
+    --ink:#F5F1E8;
+    --surface:#FFFFFF;
+    --surface-2:#F0EADB;
+    --cream:#211F1A;
+    --muted:#6E6A5E;
+    --gold:#9C7C2E;
+    --gold-hi:#C9A24B;
+    --gold-deep:#6F5722;
+    --line:rgba(143,115,48,.32);
+    --hairline:rgba(40,33,15,.10);
+    --hero-mid:rgba(245,241,232,.65);
+    --glow-1:rgba(201,162,75,.20);
+    --glow-2:rgba(201,162,75,.10);
+  }
+
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{
     font-family:var(--body);
-    background:var(--ink);
+    background-color:var(--ink);
     color:var(--cream);
     line-height:1.5;
     min-height:100vh;
     /* ambient backdrop */
     background-image:
-      radial-gradient(120% 60% at 50% -5%, rgba(201,162,75,.16), transparent 60%),
-      radial-gradient(80% 50% at 50% 105%, rgba(201,162,75,.07), transparent 70%);
+      radial-gradient(120% 60% at 50% -5%, var(--glow-1), transparent 60%),
+      radial-gradient(80% 50% at 50% 105%, var(--glow-2), transparent 70%);
     background-attachment:fixed;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .45s ease, color .45s ease;
   }
 
   .wrap{
@@ -68,8 +102,9 @@
     content:"";
     position:absolute;
     inset:0;
-    background:linear-gradient(to bottom, rgba(11,11,12,0) 45%, rgba(11,11,12,.65) 80%, var(--ink) 100%);
+    background:linear-gradient(to bottom, transparent 45%, var(--hero-mid) 80%, var(--ink) 100%);
     pointer-events:none;
+    transition:background .45s ease;
   }
 
   /* ---------- SEAL (circular DM badge) ---------- */
@@ -213,7 +248,7 @@
     padding:14px 6px;
     border-radius:14px;
     background:var(--surface);
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid var(--hairline);
     color:var(--cream);
     text-decoration:none;
     transition:transform .15s ease, border-color .15s ease, background .15s ease;
@@ -241,7 +276,7 @@
     padding:13px;
     border-radius:14px;
     background:var(--surface);
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid var(--hairline);
     color:var(--cream);
     text-decoration:none;
     font-size:12.5px;
@@ -258,9 +293,10 @@
   /* ---------- INFO CARDS ---------- */
   .card{
     background:var(--surface);
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid var(--hairline);
     border-radius:var(--radius);
     padding:18px 18px;
+    transition:background-color .45s ease, border-color .45s ease;
   }
   .hours{display:flex;flex-direction:column;gap:2px}
   .hrow{
@@ -268,7 +304,7 @@
     justify-content:space-between;
     align-items:baseline;
     padding:9px 0;
-    border-bottom:1px solid rgba(255,255,255,.05);
+    border-bottom:1px solid var(--hairline);
   }
   .hrow:last-child{border-bottom:none}
   .hrow .d{font-size:14px;font-weight:500;color:var(--cream)}
@@ -302,7 +338,7 @@
   .mapbox{
     border-radius:14px;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.07);
+    border:1px solid var(--hairline);
     line-height:0;
     background:var(--surface-2);
   }
@@ -342,7 +378,7 @@
     overflow:hidden;
     background:
       linear-gradient(135deg,var(--surface-2),var(--surface));
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid var(--hairline);
   }
   .tile img{width:100%;height:100%;object-fit:cover;display:block}
   .tile.wide{grid-column:1 / -1;aspect-ratio:16/10}
@@ -404,6 +440,58 @@
   }
   .toast.show{transform:translate(-50%,0)}
 
+  /* ---------- THEME TOGGLE ---------- */
+  .theme-toggle{
+    position:fixed;
+    top:14px;right:14px;
+    z-index:60;
+    width:66px;height:33px;
+    padding:0;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:color-mix(in srgb, var(--surface) 80%, transparent);
+    cursor:pointer;
+    -webkit-backdrop-filter:blur(10px) saturate(1.2);
+    backdrop-filter:blur(10px) saturate(1.2);
+    box-shadow:0 8px 22px -10px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12);
+    transition:background-color .45s ease, border-color .45s ease, box-shadow .25s ease;
+    animation:rise .6s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .theme-toggle:hover{box-shadow:0 10px 26px -10px rgba(0,0,0,.6), 0 0 0 4px rgba(201,162,75,.12)}
+  .theme-toggle:active .tt-thumb{width:30px}
+  .tt-ico{
+    position:absolute;top:50%;
+    width:14px;height:14px;
+    transform:translateY(-50%);
+    color:var(--muted);
+    opacity:.6;
+    pointer-events:none;
+    transition:opacity .3s ease, color .45s ease;
+  }
+  .tt-ico svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .tt-moon{left:9px}
+  .tt-sun{right:9px}
+  .tt-thumb{
+    position:absolute;top:3px;left:3px;
+    width:27px;height:27px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--gold-hi),var(--gold) 58%,var(--gold-deep));
+    box-shadow:0 3px 9px -1px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.55);
+    display:grid;place-items:center;
+    transition:transform .42s cubic-bezier(.34,1.56,.64,1), width .2s ease, background .45s ease;
+  }
+  :root[data-theme="light"] .tt-thumb{transform:translateX(33px)}
+  .tt-thumb svg{
+    position:absolute;
+    width:15px;height:15px;
+    stroke:#221b07;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+    transition:opacity .3s ease, transform .42s cubic-bezier(.34,1.56,.64,1);
+  }
+  .tt-thumb .icon-sun{opacity:0;transform:rotate(-90deg) scale(.4)}
+  .tt-thumb .icon-moon{opacity:1;transform:rotate(0) scale(1)}
+  :root[data-theme="light"] .tt-thumb .icon-sun{opacity:1;transform:rotate(0) scale(1)}
+  :root[data-theme="light"] .tt-thumb .icon-moon{opacity:0;transform:rotate(90deg) scale(.4)}
+
   /* ---------- LOAD ANIMATION ---------- */
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes sheen{0%,18%{left:-60%}38%,100%{left:130%}}
@@ -422,11 +510,26 @@
     .reveal{animation:none;opacity:1}
     .save::after{animation:none;display:none}
     .toast{transition:none}
+    .theme-toggle{animation:none}
+    .tt-thumb,.tt-thumb svg{transition:none}
     *{scroll-behavior:auto!important}
   }
 </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème (clair / sombre)" title="Changer de thème">
+    <span class="tt-ico tt-moon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </span>
+    <span class="tt-ico tt-sun" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </span>
+    <span class="tt-thumb" aria-hidden="true">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </span>
+  </button>
+
   <main class="wrap">
 
     <!-- HERO -->
@@ -591,6 +694,36 @@ const CONFIG = {
    ============================================================ */
 
 const $ = id => document.getElementById(id);
+
+/* theme toggle (initial theme already applied in <head> to avoid flash) */
+(function(){
+  const root = document.documentElement;
+  const btn = $("themeToggle");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const KEY = "dm-theme";
+  const COLORS = { dark:"#0B0B0C", light:"#F5F1E8" };
+  function sync(theme){
+    btn.setAttribute("aria-pressed", String(theme === "light"));
+    if(meta) meta.setAttribute("content", COLORS[theme] || COLORS.dark);
+  }
+  sync(root.getAttribute("data-theme") === "light" ? "light" : "dark");
+  btn.addEventListener("click", ()=>{
+    const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    sync(next);
+    try{ localStorage.setItem(KEY, next); }catch(e){}
+  });
+  /* follow the OS theme only while the user hasn't made an explicit choice */
+  if(window.matchMedia){
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e=>{
+      let saved; try{ saved = localStorage.getItem(KEY); }catch(_){}
+      if(saved) return;
+      const t = e.matches ? "light" : "dark";
+      root.setAttribute("data-theme", t);
+      sync(t);
+    });
+  }
+})();
 
 /* fill text */
 $("eyebrow").textContent = CONFIG.eyebrow;
