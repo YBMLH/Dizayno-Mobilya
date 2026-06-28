@@ -423,6 +423,29 @@
   }
   footer .mark b{color:var(--gold);font-style:normal}
   footer .fine{font-size:11px;margin-top:6px;letter-spacing:.02em}
+  .credit{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:16px;
+    padding:7px 14px;
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    color:var(--muted);
+    text-decoration:none;
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:.02em;
+    transition:transform .15s ease, border-color .15s ease, background-color .35s ease, color .35s ease;
+  }
+  .credit svg{width:14px;height:14px;fill:#25D366;flex:0 0 auto}
+  .credit b{color:var(--cream);font-weight:600}
+  .credit:hover,.credit:focus-visible{
+    transform:translateY(-1px);
+    border-color:var(--line);
+    background:var(--surface-2);
+  }
 
   /* ---------- TOAST ---------- */
   .toast{
@@ -621,6 +644,10 @@
     <footer class="reveal d7">
       <p class="mark">Dizayno <b>Mobilya</b></p>
       <p class="fine">Carte de visite numérique</p>
+      <a class="credit" href="https://wa.me/213795006864" target="_blank" rel="noopener" aria-label="Développé par MK — contacter sur WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.8c2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 0 1 2.39 5.77c0 4.5-3.66 8.16-8.16 8.16h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.13 8.13 0 0 1-1.25-4.34c0-4.5 3.66-8.16 8.16-8.16zm-2.7 4.45c-.2 0-.53.08-.81.38-.28.3-1.07 1.04-1.07 2.54s1.1 2.95 1.25 3.15c.15.2 2.16 3.3 5.24 4.5.73.32 1.3.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.81-.74 2.07-1.46.26-.72.26-1.33.18-1.46-.08-.13-.28-.2-.58-.35-.3-.15-1.81-.89-2.09-.99-.28-.1-.48-.15-.69.15-.2.3-.79.99-.97 1.19-.18.2-.36.23-.66.08-.3-.15-1.27-.47-2.42-1.49-.89-.8-1.5-1.78-1.67-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.36.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.67-1.66-.93-2.27-.24-.6-.49-.51-.67-.52l-.57-.01z"/></svg>
+        Développé par <b>MK</b>
+      </a>
     </footer>
   </main>
 
